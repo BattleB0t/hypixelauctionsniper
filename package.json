@@ -1,0 +1,18 @@
+{
+  "name": "auctionbotjs",
+  "version": "1.0.0",
+  "description": "auction sniper bot for hypixel skyblock",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "atob": "^2.1.2",
+    "hypixel-api": "^1.2.0",
+    "nbt": "^0.8.1",
+    "prismarine-nbt": "^1.5.0",
+    "util": "^0.12.4"
+  }
+}

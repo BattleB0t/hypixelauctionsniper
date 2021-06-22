@@ -1,5 +1,5 @@
 node_modules/
 .vscode/
 package-lock.json
-lowestBin.json
+lowestBin/
 ahPage.json

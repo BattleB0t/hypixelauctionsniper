@@ -17,6 +17,7 @@ var parseNbt = util.promisify(nbt.parse);
 const nbtUtil = require('./util.js')
 */
 const mathUtil = require('./util/math.js');
+const { time } = require('console');
 
 
 
@@ -121,8 +122,11 @@ async function lbinRequest() {
 
         }
     }
+    let ts = Date.now();
+    let date_ob = new Date(ts);
+
     let json = JSON.stringify(lowestBin);
-    fs.writeFileSync('lowestBin.json', json);
+    fs.writeFileSync(`./lowestBin/${date_ob.getDate()}.json`, json);
 }
 
 

@@ -74,6 +74,11 @@ function max(array) {
     const standardDeviation_ = Math.sqrt(avgSquareDiff);
     return Math.floor(standardDeviation_);
   }
+
+
+  /** 
+  Find the second lowest [WIP]
+  */
   function secondMin(array){
     
   }

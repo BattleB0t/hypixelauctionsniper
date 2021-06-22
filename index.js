@@ -13,9 +13,10 @@ const {
 
 var parseNbt = util.promisify(nbt.parse);
 
+/* (unused)
 const nbtUtil = require('./util.js')
+*/
 const mathUtil = require('./util/math.js');
-const ahPage = require('./ahPage.json')
 
 
 
@@ -64,17 +65,26 @@ async function search() {
         page = await client.getSkyblockAuctions(j);
         for (let i = 0; i < page.auctions.length; i++) {
           
-            element = ahPage.auctions[i]
+            element = page.auctions[i]
 
             itemNbt = await decodeData(element.item_bytes)
             sbID = await nbtToSbID(itemNbt)
 
 
             //scan profit
+            // mathUtil.min(lowestBin[sbID]) => pour voir la lbin, tout est dans ./util/math
+
+
             if ((mathUtil.min(lowestBin[sbID])) - (element.starting_bid) > 100000) {
 
+                console.log('')
+                console.log('======================')
+                console.log('')
                 console.log(element.item_name)
                 console.log(`profit : ${(lowestBin[resp]) - (element.starting_bid)}`)
+                console.log(`/viewauction ${element.uuid}`)
+                console.log('')
+                console.log('======================')
                 console.log('')
 
             }
@@ -97,7 +107,7 @@ async function lbinRequest() {
         page = await client.getSkyblockAuctions(j);
         for (let i = 0; i < page.auctions.length; i++) {
           
-            element = ahPage.auctions[i]
+            element = page.auctions[i]
 
             itemNbt = await decodeData(element.item_bytes)
             sbID = await nbtToSbID(itemNbt)

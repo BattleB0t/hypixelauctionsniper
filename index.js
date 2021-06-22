@@ -2,6 +2,7 @@ const HypixelAPI = require('hypixel-api');
 
 const nbt = require('prismarine-nbt');
 const util = require('util');
+const fs = require('fs')
 const {
     parse
 } = require('path');
@@ -9,11 +10,12 @@ const {
     stringify
 } = require('querystring');
 
+
 var parseNbt = util.promisify(nbt.parse);
 
-const nbtUtil = require('./nbtUtil.js')
+const nbtUtil = require('./util.js')
+const mathUtil = require('./util/math.js');
 const ahPage = require('./ahPage.json')
-//const lowestBin = require('./lowestBin.json')
 
 
 
@@ -59,79 +61,58 @@ async function search() {
 
     pages = await client.getSkyblockAuctions();
     for (let j = 0; j < pages.totalPages; j++) {
-        item = await client.getSkyblockAuctions(j);
-        item.auctions.forEach(element => {
-            if (element.bin && !element.claimed) {
-                nbtUtil.decodeData(element.item_bytes).then(nbt => {
+        page = await client.getSkyblockAuctions(j);
+        for (let i = 0; i < page.auctions.length; i++) {
+          
+            element = ahPage.auctions[i]
 
-                    nbtUtil.nbtToSbID(nbt).then(sbID => {
-                        // comparaison des prix ici
+            itemNbt = await decodeData(element.item_bytes)
+            sbID = await nbtToSbID(itemNbt)
 
-                    })
-                })
+
+            //scan profit
+            if ((mathUtil.min(lowestBin[sbID])) - (element.starting_bid) > 100000) {
+
+                console.log(element.item_name)
+                console.log(`profit : ${(lowestBin[resp]) - (element.starting_bid)}`)
+                console.log('')
+
             }
 
-        });
+            
+            
+
+        }
     }
 
 
 }
 
-async function searchWoAPI() {
-    ahPage.auctions.forEach(element => {
-        if (element.bin && !element.claimed) {
-            nbtUtil.decodeData(element.item_bytes).then(nbt => {
-
-                nbtUtil.nbtToSbID(nbt).then(sbID => {
-                    nbtUtil.decodeData(element.item_bytes).then(itemNbt => {
-                        nbtUtil.nbtToSbID(itemNbt).then(resp => {
-
-
-                            if ((lowestBin[resp]) - (element.starting_bid) > 100000) {
-
-                                console.log(element.item_name)
-                                console.log(`profit : ${(lowestBin[resp]) - (element.starting_bid)}`)
-                                console.log('')
-
-                            }
-
-
-
-                        })
-                    })
-
-                })
-            })
-        }
-
-    });
-}
-
-
-
 async function lbinRequest() {
     var lowestBin = {}
 
-    for (let j = 0; j < ahPage.auctions.length; j++) {
-        element = ahPage.auctions[j]
-        if (element.bin && !element.claimed) {
+    pages = await client.getSkyblockAuctions();
+    for (let j = 0; j < pages.totalPages; j++) {
+        console.log(`page : ${j}`)
+        page = await client.getSkyblockAuctions(j);
+        for (let i = 0; i < page.auctions.length; i++) {
+          
+            element = ahPage.auctions[i]
+
             itemNbt = await decodeData(element.item_bytes)
             sbID = await nbtToSbID(itemNbt)
-            
+
+
             if (!lowestBin[sbID]) {
                 lowestBin[sbID] = []
             }
 
             lowestBin[sbID].push(element.starting_bid)
 
-            
-
-
-
         }
     }
-    console.log(lowestBin)
-
+    let json = JSON.stringify(lowestBin);
+    fs.writeFileSync('lowestBin.json', json);
 }
 
 

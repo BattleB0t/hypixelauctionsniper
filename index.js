@@ -74,7 +74,7 @@ async function search() {
 
             //scan profit
             // mathUtil.min(lowestBin[sbID]) => pour voir la lbin, tout est dans ./util/math
-
+            console.log(((element.starting_bid - mathUtil.min(lowestBin[sbID])) / mathUtil.min(lowestBin[sbID])))
             if (((element.starting_bid - mathUtil.min(lowestBin[sbID])) / mathUtil.min(lowestBin[sbID])) > 10 ){
             //if ((mathUtil.min(lowestBin[sbID])) - (element.starting_bid) > 100000) {
 
@@ -126,7 +126,7 @@ async function lbinRequest() {
     let date_ob = new Date(ts);
 
     let json = JSON.stringify(lowestBin);
-    fs.writeFileSync(`./lowestBin/${date_ob.getDate()}.json`, json);
+    fs.writeFileSync(`lowestBin.json`, json);
 }
 
 

@@ -74,14 +74,14 @@ async function search() {
             //scan profit
             // mathUtil.min(lowestBin[sbID]) => pour voir la lbin, tout est dans ./util/math
 
-
-            if ((mathUtil.min(lowestBin[sbID])) - (element.starting_bid) > 100000) {
+            if (((element.starting_bid - mathUtil.min(lowestBin[sbID])) / mathUtil.min(lowestBin[sbID])) > 10 ){
+            //if ((mathUtil.min(lowestBin[sbID])) - (element.starting_bid) > 100000) {
 
                 console.log('')
                 console.log('======================')
                 console.log('')
                 console.log(element.item_name)
-                console.log(`profit : ${(lowestBin[resp]) - (element.starting_bid)}`)
+                console.log(`profit : ${mathUtil.min(lowestBin[sbID]) - (element.starting_bid)}`)
                 console.log(`/viewauction ${element.uuid}`)
                 console.log('')
                 console.log('======================')
@@ -126,5 +126,9 @@ async function lbinRequest() {
 }
 
 
+lbinRequest().then(() => {
+    while (True) {
+        search()
+    }
+})
 
-lbinRequest()

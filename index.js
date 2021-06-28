@@ -24,10 +24,13 @@ const { time } = require('console');
 const client = new HypixelAPI();
 
 async function decodeData(buffer) {
-
+    
     var buffer = await Buffer.from(buffer, 'base64')
+    
 
     var parsedNbt = await parseNbt(buffer);
+
+
     return await nbt.simplify(parsedNbt);
 }
 
@@ -59,10 +62,12 @@ async function nbtToSbID(nbt) {
 }
 
 async function search() {
+    
 
 
     pages = await client.getSkyblockAuctions();
     for (let j = 0; j < pages.totalPages; j++) {
+        console.log("oui !!  2")
         page = await client.getSkyblockAuctions(j);
         for (let i = 0; i < page.auctions.length; i++) {
           
@@ -101,17 +106,21 @@ async function search() {
 
 async function lbinRequest() {
     var lowestBin = {}
-
     pages = await client.getSkyblockAuctions();
     for (let j = 0; j < pages.totalPages; j++) {
         console.log(`page : ${j}`)
         page = await client.getSkyblockAuctions(j);
+
         for (let i = 0; i < page.auctions.length; i++) {
           
             element = page.auctions[i]
 
+
             itemNbt = await decodeData(element.item_bytes)
+
             sbID = await nbtToSbID(itemNbt)
+            console.timeEnd('decodage')
+
 
 
             if (!lowestBin[sbID]) {
@@ -125,14 +134,11 @@ async function lbinRequest() {
     let ts = Date.now();
     let date_ob = new Date(ts);
 
+
     let json = JSON.stringify(lowestBin);
     fs.writeFileSync(`lowestBin.json`, json);
+    
 }
 
 
-lbinRequest().then(() => {
-    while (True) {
-        search()
-    }
-})
-
+lbinRequest()

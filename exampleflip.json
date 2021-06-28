@@ -1,0 +1,14 @@
+[
+    {
+        "item" : "example",
+        "profit" : "100000",
+        "profitPercentage" : "20",
+        "auctionId" :"exampleAuctionId"
+    },
+    {
+        "item" : "exampleTwo",
+        "profit" : "200000",
+        "profitPercentage" : "50",
+        "auctionId" :"exampleAuctionId2"
+    }
+]
